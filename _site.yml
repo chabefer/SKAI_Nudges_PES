@@ -1,18 +1,18 @@
 name: "SKY"
 output_dir: "."
 navbar:
-  title: "Performances of Methods Correcting for Publication Bias"
+  title: "Adequate title for your topic"
   left:
     - text: "Home"
       href: index.html
-    - text: "Methods"
-      href: Methods.html
-    - text: "Simulations"
-      href: Simulations.html
-    - text: "Data"
-      href: Data.html
+    - text: "Topic 1"
+      href: name1.html
+    - text: "Topic 2"
+      href: name2.html
+    - text: "Topic 3"
+      href: name3.html
     - text: "About"
-      href: about.html
+      href: About.html
       
       
 output:

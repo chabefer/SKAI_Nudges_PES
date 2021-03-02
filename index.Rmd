@@ -1,9 +1,9 @@
 
 
-This is a [SKY](https://chabefer.github.io/SKY/index.html) website examining the performances of methods correcting for publication bias.
+This is a [SKY](https://chabefer.github.io/SKY/index.html) website examining **your topic**.
 
 This website contains:
 
-* [Description of the methods](Methods.html)
-* [Results from simulations](Simulations.html)
-* [Results on real data](Data.html)
+* [Topic 1](name1.html)
+* [Topic 2](name2.html)
+* [Topic 3](name3.html)
