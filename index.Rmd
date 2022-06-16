@@ -23,7 +23,7 @@ HdF <- dbConnect(MySQL(), dbname="HdF",
 # reading Results table
 MetaNudgesPES <- dbReadTable(HdF,"MetaPES") %>%
               mutate(
-                Treatment = factor(Treatment,levels=c("All Nudges (Est.)","Simple Letter","All (France)","Simple Nudge vs Simple Letter","Elaborate Nudge vs Simple Letter")),
+                Treatment = factor(Treatment,levels=c("All Nudges (Est.)","Simple Letter","All (Diffusion - France)","Simple Nudge vs Simple Letter","Elaborate Nudge vs Simple Letter")),
                 Treatment = recode(Treatment,"Simple Nudge vs Simple Letter"="Simple Nudge","Elaborate Nudge vs Simple Letter"="Elaborate Nudge"),
                 Type = factor(Type,levels=c("Treatment Effect","Cost-Effectiveness")),
                 Method= factor(Method,levels=c("Meta-analysis","PEESE"))
@@ -51,7 +51,7 @@ wallander <- wallander %>%
             select(TE,SeTE,Treatment) %>%
               mutate(
                 Treatment= recode(Treatment,"All"="All Nudges (Est.)"),
-                Treatment = factor(Treatment,levels=c("All Nudges (Est.)","Simple Letter","All (France)","Simple Nudge vs Simple Letter","Elaborate Nudge vs Simple Letter")),
+                Treatment = factor(Treatment,levels=c("All Nudges (Est.)","Simple Letter","All (Diffusion - France)","Simple Nudge vs Simple Letter","Elaborate Nudge vs Simple Letter")),
                 Type="Treatment Effect",
                 Type = factor(Type,levels=c("Treatment Effect","Cost-Effectiveness")),
                 Method="Meta-analysis",
@@ -68,7 +68,7 @@ chabe <- chabe %>%
           select(Treatment,CENPdCDiff,SeCENPdCDiff) %>%
           mutate(
             Treatment= recode(Treatment,"All"="All (France)"), #it would be more correct to generate CE for the simple letter (it would be smaller)
-            Treatment = factor(Treatment,levels=c("All Nudges (Est.)","Simple Letter","All (France)","Simple Nudge vs Simple Letter","Elaborate Nudge vs Simple Letter")),
+            Treatment = factor(Treatment,levels=c("All Nudges (Est.)","Simple Letter","All (Diffusion - France)","Simple Nudge vs Simple Letter","Elaborate Nudge vs Simple Letter")),
             Type="Cost-Effectiveness",
             Type = factor(Type,levels=c("Treatment Effect","Cost-Effectiveness")),
             Method="PEESE",
@@ -93,7 +93,7 @@ ggplot(filter(MetaNudgesPES,Type=="Treatment Effect"),aes(Treatment,Effects,grou
   theme_bw()
 
 # generating plot for cost-effectiveness
-ggplot(filter(MetaNudgesPES,Type=="Cost-Effectiveness",Treatment=="Simple Letter" | Treatment=="All (France)"),aes(Treatment,Effects,group=Method,color=Method)) +
+ggplot(filter(MetaNudgesPES,Type=="Cost-Effectiveness",Treatment=="Simple Letter" | Treatment=="All (Diffusion - France)"),aes(Treatment,Effects,group=Method,color=Method)) +
   geom_pointrange(aes(ymin=Effects-1.96*SeEffects,ymax=Effects+1.96*SeEffects),position=position_dodge(0.7))+
   coord_cartesian(ylim=c(0,200))+
  ylab("Cost per additional contract (in 2012 USD)")+
