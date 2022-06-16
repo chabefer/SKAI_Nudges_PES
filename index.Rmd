@@ -67,7 +67,7 @@ chabe <- chabe %>%
           filter(Treatment=="All",Outcome=="Contracts") %>%
           select(Treatment,CENPdCDiff,SeCENPdCDiff) %>%
           mutate(
-            Treatment= recode(Treatment,"All"="All (France)"), #it would be more correct to generate CE for the simple letter (it would be smaller)
+            Treatment= recode(Treatment,"All"="All (Diffusion - France)"), #it would be more correct to generate CE for the simple letter (it would be smaller)
             Treatment = factor(Treatment,levels=c("All Nudges (Est.)","Simple Letter","All (Diffusion - France)","Simple Nudge vs Simple Letter","Elaborate Nudge vs Simple Letter")),
             Type="Cost-Effectiveness",
             Type = factor(Type,levels=c("Treatment Effect","Cost-Effectiveness")),
@@ -113,8 +113,8 @@ The main results of this literature are as follows:
   4. **More elaborate nudges such as adding handwritten encouragement notes or easy to use reply forms might be beneficial to participation**, but precision is still too low to conclude.
   The most favorable elaborate nudge is the inclusion of a handwritten encouragement note studied by [Czap et al (2019)](czap.html).
   5. **Leveraging word of mouth and diffusion effects might make sending simple letters even more cost-effective**, as shown by [Chabe-Ferret et al (2022)](chabe.html).
-  The estimated cost-effectiveness in the region where this treatment works best moves to `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='All (France)',Method=='PEESE') %>% pull(Effects) %>% round(.,0)` $\pm$ `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='All (France)',Method=='PEESE') %>% pull(SeEffects) %>% round(.,0)` USD per additional contract (contrast with the estimates ignoring diffusion effects: `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='Simple Letter',Method=='PEESE') %>% pull(Effects) %>% round(.,0)` $\pm$ `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='Simple Letter',Method=='PEESE') %>% pull(SeEffects) %>% round(.,0)` USD per additional contract).
-  More results on larger datasets are needed in order to pin down the real magnitude of cost savings.
+  The estimated cost-effectiveness in the region where this treatment works best moves to `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='All (Diffusion - France)',Method=='PEESE') %>% pull(Effects) %>% round(.,0)` $\pm$ `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='All (Diffusion - France)',Method=='PEESE') %>% pull(SeEffects) %>% round(.,0)` USD per additional contract (contrast with the estimates ignoring diffusion effects: `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='Simple Letter',Method=='PEESE') %>% pull(Effects) %>% round(.,0)` $\pm$ `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='Simple Letter',Method=='PEESE') %>% pull(SeEffects) %>% round(.,0)` USD per additional contract).
+  More results on larger datasets are needed in order to check whether these results replicate.
 
 ```{r Main, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE}
 # reading connection informations
