@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Nudging participation in the Conservation Reserve Program in the US</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Nudging farmers to take up Payments for Environmental Services</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="wallander.html">Wallander et al (2017)</a>
+</li>
+<li>
+  <a href="czap.html">Czap et al (2019)</a>
+</li>
+<li>
+  <a href="chabe.html">Chabe-Ferret et al (2022)</a>
+</li>
+<li>
+  <a href="About.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Nudging participation in the Conservation Reserve Program in the US</h1>
+
+</div>
+
+
+<p><a href="https://doi.org/10.1093/ajae/aax023">Wallander et al (2017)</a> present the results of a large-scale field experiment within the USDA’s Conservation Reserve Program (CRP) that examines whether informational outreach, including behavioral nudges, could improve land owners’ willingness to participate. The experiment evaluates the impact of three types of reminder letters on the rate at which land is offered into the CRP.</p>
+<ul>
+<li><p>Treatment 1, the basic treatment, consists of an informational letter that reminds farmers about the General Signup and their eligibility for the program. The key behavioral insight embedded in the letter is a reminder that the General Sign-up period had begun.</p></li>
+<li><p>Treatment 2 keeps the same content as treatment 1 and adds a side box that told farmers how other stewards in their state had provided ecosystem services for their neighbors through participation in CRP, suggesting the popularity of CRP.</p></li>
+<li><p>Treatment 3 augments treatment 2 by adding two boxes, both of which signal to farmers the private benefits of enrolling in CRP. The first box emphasizes the stability of CRP payments. The second box uses a peer comparison to signal the regional popularity of CRP.</p></li>
+</ul>
+<p>There are two treatment groups in this experiment: the group of farmers with expiring contracts and the group of previously unenrolled farmers.</p>
+<div class="figure" style="text-align: center">
+<img src="wallander_files/figure-html/MainWallPlot-1.png" alt="Impact and cost-effectiveness of the treatments" width="50%" /><img src="wallander_files/figure-html/MainWallPlot-2.png" alt="Impact and cost-effectiveness of the treatments" width="50%" />
+<p class="caption">
+Impact and cost-effectiveness of the treatments
+</p>
+</div>
+<p>The main results of the paper are:</p>
+<ol style="list-style-type: decimal">
+<li>The nudges did not have any detectable effect on enrollment in the group of previously unenrolled farmers. The estimated null effect is very precise (0 <span class="math inline">\(\pm\)</span> 8 contract applications per 10000 letters).</li>
+<li>The nudges did have a detectable effect on the group of farmers with an expiring contract, but the effect is less precise (168 <span class="math inline">\(\pm\)</span> 102 contract applications per 10000 letters).</li>
+<li>There is no discernable impact of the additional nudges on top of the simple letter in the group of farmers with an expiring contract.</li>
+<li>The cost of an additional application is 35 <span class="math inline">\(\pm\)</span> 22 <em>2012USD</em> in the group of farmers with an expiring contract.</li>
+</ol>
+<p>Below is how we extracted these results from the paper.</p>
+<div id="results-for-the-group-of-farmers-with-expiring-contracts" class="section level2">
+<h2>Results for the group of farmers with expiring contracts</h2>
+<p>Offer rates are 0.575 in the control group and 0.594, 0.589, and 0.591 in the three treatment arms. The differences in offer rates from the control group (and thus the estimated causal effects from the three treatments) are 1.9, 1.4, and 1.7 percentage points, respectively. Each treatment effect is statistically significantly different from zero; the <span class="math inline">\(p-\)</span>values for the three treatment effects are 0.002, 0.023, and 0.006 for treatments 1, 2, and 3, respectively.</p>
+<p>Given that there is no statistical difference between treatments, if we pool all three treatments the offer rate among all high-information farms receiving a letter is 0.591, indicating that the treatment effect of receiving any letter is an increase in the offer rate of 1.68 percentage points. The 95% confidence interval for the pooled treatment effect is 0.69 to 2.68 percentage points.</p>
+<p>We convert the precision estimates in standard deviations by inverting the <span class="math inline">\(p-\)</span>values or the confidence intervals. For a 2-sided t-test, the <span class="math inline">\(p-\)</span>value is equal to: <span class="math inline">\(p=2(1-\Phi(|\frac{\hat\beta}{\hat\sigma_{\beta}}|))\)</span>, with <span class="math inline">\(\Phi\)</span> the c.d.f. of the standard normal distribution and <span class="math inline">\(\hat\sigma_{\beta}\)</span> the standard error of the estimated treatment effect. As a consequence, for a positive effect, we can estimate the standard error as: <span class="math inline">\(\hat\sigma_{\beta}=\frac{\hat\beta}{\Phi^{-1}(1-\frac{p}{2})}\)</span>. If <span class="math inline">\(\bar{\beta}_{\alpha}\)</span> and <span class="math inline">\(\underline{\beta}_{\alpha}\)</span> are the two extremities of the <span class="math inline">\(100\alpha\)</span>% confidence interval, <a href="https://chabefer.github.io/STCI/FPSI.html#sec:CLT">we know that</a> <span class="math inline">\(\hat\sigma_{\beta}=\frac{\bar{\beta}_{\alpha}-\underline{\beta}_{\alpha}}{2\Phi^{-1}(\frac{1+\alpha}{2})}\)</span> (when both extremities are positive).</p>
+<p>Let us wrap these results in a table.</p>
+<pre class="r"><code># function for inverting p-values
+se.pval &lt;- function(pval,beta){
+  return(beta/qnorm(1-pval/2))
+}
+# function for inverting confidence intervals 
+se.CI &lt;- function(alpha,betalow,betahigh){
+  return((betahigh-betalow)/(2*qnorm((1+alpha)/2)))
+}
+
+# treatment effects
+wall.exp.TE &lt;- c(1.68,1.9,1.4,1.7)
+names(wall.exp.TE) &lt;- c(&quot;All&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;)
+
+# relative effects
+wall.exp.TE[5:7] &lt;- c(1.4-1.9,1.7-1.9,1.7-1.4)
+names(wall.exp.TE)[5:7] &lt;- c(&quot;2vs1&quot;,&quot;3vs1&quot;,&quot;3vs2&quot;)
+
+# pvalues
+wall.exp.pval &lt;- c(0.002,0.023,0.006)
+names(wall.exp.pval) &lt;- c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;)
+
+# confidence interval
+wall.exp.CI &lt;- c(0.69,2.68)
+names(wall.exp.CI) &lt;- c(&quot;AllLow&quot;,&quot;AllHigh&quot;)
+
+# computing precision
+wall.exp.se &lt;- c(0,0,0,0,0,0,0)
+names(wall.exp.se) &lt;- c(&quot;All&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;2vs1&quot;,&quot;3vs1&quot;,&quot;3vs2&quot;)
+
+wall.exp.se[[1]] &lt;- se.CI(alpha=0.95,betalow=wall.exp.CI[[1]],betahigh=wall.exp.CI[[2]])
+wall.exp.se[2:4] &lt;- purrr::map2_dbl(wall.exp.pval,wall.exp.TE[2:4],se.pval)
+# we give the mean precision of the individual treatment effects to the relative effects
+wall.exp.se[5:7] &lt;- mean(wall.exp.se[2:4])
+
+# putting results together in a dataframe
+wall.exp &lt;- as.data.frame(cbind(wall.exp.TE,wall.exp.se))
+colnames(wall.exp) &lt;- c(&#39;TE&#39;,&#39;SeTE&#39;)
+wall.exp$Treatment &lt;- c(&quot;All&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;2vs1&quot;,&quot;3vs1&quot;,&quot;3vs2&quot;)
+wall.exp$Group &lt;- &quot;Expiring&quot;</code></pre>
+</div>
+<div id="results-for-the-group-of-previously-unenrolled-farmers." class="section level2">
+<h2>Results for the group of previously unenrolled farmers.</h2>
+<p>Among the previously unenrolled farmers, offer rates are 0.0022 in the control group and 0.0019, 0.0027 and 0.0021 in the three treatment arms. The differences in offer rates from the control group (and thus the estimated causal effects from the three treatments) are -0.03, 0.05 and -0.01 percentage points, respectively. The precision of this experiment is not given in the text. We simply know that this experiment had sufficient power to detect an approximate doubling of the offer rate, from 0.2% to 0.4%. We know that, for a two-sided t-test of level <span class="math inline">\(\alpha\)</span>, the power is equal to <span class="math inline">\(\kappa=\Phi(|\frac{\hat\beta}{\hat\sigma_{\beta}}|-\Phi^{-1}(1-\frac{\alpha}{2}))\)</span>. As a consequence, we can approximate the standard error of the treatment effect by <span class="math inline">\(\hat\sigma_{\beta}=\frac{\hat\beta}{\Phi^{-1}(\kappa)+\Phi^{-1}(1-\frac{\alpha}{2})}\)</span>. Using <span class="math inline">\(\hat\beta=0.002\)</span>, <span class="math inline">\(\alpha=0.05\)</span> and <span class="math inline">\(\kappa=0.8\)</span> (the usual values used for selecting adequate power), we can recover the standard error of the estimator.</p>
+<pre class="r"><code># function for inverting power 
+se.power &lt;- function(beta,alpha,kappa){
+  return(beta/(qnorm(kappa)+qnorm(1-alpha/2)))
+}
+
+# treatment effects
+wall.unenroll.TE &lt;- c(0,-0.03,0.05,-0.01)
+wall.unenroll.TE[[1]] &lt;- mean(wall.unenroll.TE[2:4])
+names(wall.unenroll.TE) &lt;- c(&quot;All&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;)
+# relative effects
+wall.unenroll.TE[5:7] &lt;- c(0.05+0.03,-0.01+0.03,-0.01-0.05)
+names(wall.unenroll.TE)[5:7] &lt;- c(&quot;2vs1&quot;,&quot;3vs1&quot;,&quot;3vs2&quot;)
+
+# computing standard error
+wall.unenroll.se &lt;- c(0,0,0,0,0,0,0)
+names(wall.unenroll.se) &lt;- c(&quot;All&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;2vs1&quot;,&quot;3vs1&quot;,&quot;3vs2&quot;)
+wall.unenroll.se[2:4] &lt;- rep(se.power(beta=0.2,alpha=0.05,kappa=0.8),3)
+wall.unenroll.se[[1]] &lt;- se.power(beta=0.2,alpha=0.05,kappa=0.8)/sqrt(3)
+# we give the mean precision of the individual treatment effects to the relative effects
+wall.unenroll.se[5:7] &lt;- mean(wall.unenroll.se[2:4])
+
+# putting results together in a dataframe
+wall.unenroll &lt;- as.data.frame(cbind(wall.unenroll.TE,wall.unenroll.se))
+colnames(wall.unenroll) &lt;- c(&#39;TE&#39;,&#39;SeTE&#39;)
+wall.unenroll$Treatment &lt;- c(&quot;All&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;2vs1&quot;,&quot;3vs1&quot;,&quot;3vs2&quot;)
+wall.unenroll$Group &lt;- &quot;Unenrolled&quot;</code></pre>
+</div>
+<div id="cost-effectiveness-of-each-treatment" class="section level1">
+<h1>Cost-effectiveness of each treatment</h1>
+<p>Wallander et al (2017) report a cost per letter of <span class="math inline">\(c=58.5\)</span> cents. That means that cost-effectiveness can be estimated by dividing <span class="math inline">\(c\)</span> by the treatment effect (or additional number of contracts per letter): <span class="math inline">\(\hat{CE}=\frac{c}{\hat\beta}\)</span>. The standard error of the cost effectiveness can be obtained by the delta method: <span class="math inline">\(\hat\sigma_{CE}=\frac{c}{\hat\beta^2}\hat\sigma_{\beta}\)</span>. Let us now compute these terms for the two samples.</p>
+<pre class="r"><code># function for computing standard error of cost-effectiveness 
+se.CE &lt;- function(beta,sigmabeta,c=0.585){
+  return(sigmabeta*c/(beta^2))
+}
+
+# Regroup results
+wall &lt;- rbind(wall.exp,wall.unenroll)
+
+# generate cost-effectiveness
+c &lt;- 0.585 # cost per letter in dollars 2012
+wall &lt;- wall %&gt;%
+          mutate(
+            TE = TE*100, # all effects per 10000 letters
+            SeTE = SeTE*100,# all effects per 10000 letters
+            CE = c*10000/TE,# cost of 10000 letters divided by number of contracts
+            SeCE = map2_dbl(TE,SeTE,se.CE,c=c*10000) #standard error
+          )</code></pre>
+</div>
+<div id="sending-results-to-skai" class="section level1">
+<h1>Sending results to SKAI</h1>
+<p>We are now ready to send our results to SKAI.</p>
+<pre class="r"><code># reading connection informations
+source(here::here(&quot;idSQL.R&quot;))
+# connecting to SQL server
+HdF &lt;- dbConnect(MySQL(), dbname=&quot;HdF&quot;,
+                     user=myid, password=mypass, host=myhost)
+# sending Results table
+dbWriteTable(HdF,&quot;wallander&quot;,wall,overwrite=TRUE)
+# commenting the table
+dbSendQuery(HdF,&quot;ALTER TABLE `HdF`.`wallander` 
+    CHANGE COLUMN `TE` `TE` DOUBLE NULL DEFAULT NULL COMMENT &#39;The effect of the treatment measured as an increase in contract applications per 10000 farmers.&#39; ,
+    CHANGE COLUMN `SeTE` `SeTE` DOUBLE NULL DEFAULT NULL COMMENT &#39;The standard error of the estimated treatment effect.&#39; ,
+    CHANGE COLUMN `Treatment` `Treatment` TEXT NULL DEFAULT NULL COMMENT &#39;The treatment analysed.\nAll refers to all the treatments combined.\n1 consists of an informational letter that reminds farmers about the General Signup and their eligibility for the program. \n2 keeps the same content as treatment 1 and adds a side box that told farmers how other stewards in their state had provided ecosystem services for their neighbors through participation in CRP, suggesting the popularity of CRP. \n3 augments treatment 2 by adding two boxes, both of which signal to farmers the private benefits of enrolling in CRP.&#39; ,     
+    CHANGE COLUMN `CE` `CE` DOUBLE NULL DEFAULT NULL COMMENT &#39;Cost-effectiveness of the treatment, in 2012 dollars by additional contract.&#39;,
+    CHANGE COLUMN `SeCE` `SeCE` DOUBLE NULL DEFAULT NULL COMMENT &#39;Standards error of the cost-effectiveness of the treatment, in 2012 dollars by additional contract.&#39;,    
+    COMMENT = &#39;Table containing the estimated treatment effects of the letters sent to nudge farmers to subscribe Payments for Environmental Services in the CRP experiment of Wallander et al (2017).&#39; ;
+&quot;)
+# disconnecting the connection to the SQL server
+dbDisconnect(HdF)</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -3,4 +3,4 @@ title: "About"
 output: html_document
 ---
 
-This website is a part of [SKY](https://chabefer.github.io/SKY/index.html), the Social Science Knowledge Accumulation Initiative. 
+This website is a part of [SKAI](https://chabefer.github.io/SKY/index.html), the Social Science Knowledge Accumulation Initiative. 

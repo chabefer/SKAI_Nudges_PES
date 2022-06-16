@@ -1,0 +1,60 @@
+---
+title: "Nudging participation in the Payments for Environmental Services Program in the EU"
+output: html_document
+---
+
+```{r libs, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE}
+library(tidyverse)
+library(RMySQL)
+```
+
+[Chabe-Ferret et al (2022)](file:///Users/sylvain/Dropbox/private/Private/projets_papiers/Environnement/PENSEE/COLLABORATIONS/Hauts_de_France/WORK/HdF_ReAnalysis_Publication.html) report on the results of a large randomised experiment (N=20000) conducted in the Hauts de France region to test whether nudges sent by mail can increase the subscription rate of Payments for Environmental Services 
+they test several nudges: 
+
+  - Treatment 1: information about the program.
+  - Treatment 2: testimonies by farmers already benefiting from the program.
+  - Treatment 3: pre-stamped reply forms.
+
+```{r MainChabe, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE}
+# reading connection informations
+source(here::here("idSQL.R"))
+# connecting to SQL server
+HdF <- dbConnect(MySQL(), dbname="HdF",
+                     user=myid, password=mypass, host=myhost)
+# reading Results table
+chabe <- dbReadTable(HdF,"Results") %>%
+              mutate(
+                   Treatment=factor(Treatment,levels=c("All","Bare Letter","Bare Letter+Testimonies","Bare Letter+Testimonies+Pre-Stamped Reply Form","Testimonies vs Bare Letter","Testimonies+Pre-Stamped Reply Form vs Bare Letter","Pre-Stamped Reply Form vs Testimonies")),
+                  Treatment= factor(as.character(as.numeric(Treatment)-1),levels=as.character(0:6)),
+                  Treatment=recode(Treatment,"0"="All"
+                                            ,"4"="2vs1"
+                                            ,"5"="3vs1"
+                                            ,"6"="3vs2")
+                  )
+
+# disconnecting the connection to the SQL server
+dbDisconnect(HdF)
+```
+
+```{r MainChabePlot, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE,fig.cap=c('Impact and cost-effectiveness of the treatments'),fig.subcap=c('Treatment effects','Cost-effectiveness'),fig.align='center', out.width="50%", fig.height=4, fig.width=6}
+# generating plot for treatment effects
+ggplot(filter(chabe,Outcome=="Contracts"),aes(Treatment,TE)) +
+  geom_pointrange(aes(ymin=TE-1.96*SeTE,ymax=TE+1.96*SeTE),position=position_dodge(0.7))+
+ ylab("Number of additional contracts (per 10000 letters)")+
+  theme_bw()
+
+# generating plot for cost-effectiveness
+ggplot(filter(chabe,Treatment=="All"|Treatment=="1"|Treatment=="2"|Treatment=="3"),aes(Treatment,CE)) +
+  geom_pointrange(aes(ymin=CE-1.96*SeCE,ymax=CE+1.96*SeCE),position=position_dodge(0.7))+
+  coord_cartesian(ylim=c(0,600))+
+ ylab("Cost per additional contract (in 2018 Euros)")+
+  xlab("Treatment")+
+  theme_bw()
+
+```
+
+Chabe-Ferret et al (2022) find that:
+
+  1. Simple letters informing farmers that they are eligible to PES increase the number of contracts by `r chabe %>% filter(Outcome=='Contracts',Treatment=='1') %>% pull(TE) %>% round(.,0)` $\pm$ `r 2*(chabe %>% filter(Outcome=='Contracts',Treatment=='1') %>% pull(SeTE) %>% round(.,0))` per 10000 letters sent, at a cost of  `r chabe %>% filter(Outcome=='Contracts',Treatment=='1') %>% pull(CE) %>% round(.,0)` $\pm$ `r 2*(chabe %>% filter(Outcome=='Contracts',Treatment=='1') %>% pull(SeCE) %>% round(.,0))` *2018 Euros*/additional contract, without degrading the environmental quality of the contracts.
+  2. Nudges such as testimony or social comparison does not result in additional contracts on top of the simple letter (`r chabe %>% filter(Outcome=='Contracts',Treatment=='2vs1') %>% pull(TE) %>% round(.,0)` $\pm$ `r 2*(chabe %>% filter(Outcome=='Contracts',Treatment=='2vs1') %>% pull(SeTE) %>% round(.,0))` per 10000 letters).
+  3. Pre-stamped reply forms increase contacts with caseworkers on top of the simple letter (`r chabe %>% filter(Outcome=='Contacts',Treatment=='3vs1') %>% pull(TE) %>% round(.,0)` $\pm$ `r 2*(chabe %>% filter(Outcome=='Contacts',Treatment=='3vs1') %>% pull(SeTE) %>% round(.,0))` per 10000 letters) but do not increase the number of contracts (`r chabe %>% filter(Outcome=='Contracts',Treatment=='3vs1') %>% pull(TE) %>% round(.,0)` $\pm$ `r 2*(chabe %>% filter(Outcome=='Contracts',Treatment=='3vs1') %>% pull(SeTE) %>% round(.,0))` per 10000 letters).

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Nudging participation in the Conservation Stewardship Program in the US</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Nudging farmers to take up Payments for Environmental Services</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="wallander.html">Wallander et al (2017)</a>
+</li>
+<li>
+  <a href="czap.html">Czap et al (2019)</a>
+</li>
+<li>
+  <a href="chabe.html">Chabe-Ferret et al (2022)</a>
+</li>
+<li>
+  <a href="About.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Nudging participation in the Conservation Stewardship Program in the US</h1>
+
+</div>
+
+
+<p><a href="https://doi.org/10.1016/j.ecolecon.2019.03.010">Czap et al et al (2019)</a> present the results of a large-scale field experiment within the USDA’s Conservation Stewardship Program (CSP). They sent different versions of a recruitment/enrollment letter to agricultural producers in 36 Nebraska counties with historically very low levels of CSP enrollment. The three versions of the letters that they sent are as follows:</p>
+<ul>
+<li>Treatment 1: standard letter with the usual focus on the financial incentives offered by the program administrators.</li>
+<li>Treatment 2: photocopied empathy nudge. The language related to empathy nudging included: ‘’In the last two years, over 1600 of your fellow Nebraska farmers joined the common cause and enrolled/re-enrolled into the Conservation Stewardship Program.’’ and ‘’Consider our role as caretakers of our natural resources, on which we depend on for our survival. Consider the impact of your decisions on wildlife habitat, water and air quality, your local community, and future generations.’’ ‘’Join your fellow Nebraska farmers and ranchers in protecting our land!’’ was added at the bottom of the letter next to the signature.<br />
+The mention was written by the state conservationist and photocopied on every letter sent in the treatment 2 condition.</li>
+<li>Treatment 3: same as treatment 2 except that the empathy nudge was handwritten by research assistants.</li>
+</ul>
+<div class="figure" style="text-align: center">
+<img src="czap_files/figure-html/MainCzapPlot-1.png" alt="Impact and cost-effectiveness of the treatments" width="50%" /><img src="czap_files/figure-html/MainCzapPlot-2.png" alt="Impact and cost-effectiveness of the treatments" width="50%" />
+<p class="caption">
+Impact and cost-effectiveness of the treatments
+</p>
+</div>
+<p>Czap et al (2019) find that:</p>
+<ol style="list-style-type: decimal">
+<li>Sending letters increases the number of contract applications by 109 <span class="math inline">\(\pm\)</span> 66 per 10000 letters, a doubling of the baseline uptake.</li>
+<li>Personalized letters with a handwritten phrase appealing to people’s empathetic tendencies toward environmental conservation – Treatment 3 – had the largest impact. The difference with the simple letter is 33 <span class="math inline">\(\pm\)</span> 52 additional contracts per 10000 letters, a difference that is not statistically different from zero.</li>
+<li>When the same nudge was photocopied (Treatment 2), it performed worse than both treatment 3 (-61 <span class="math inline">\(\pm\)</span> 52) and Treatment 1 (-28 <span class="math inline">\(\pm\)</span> 52).</li>
+<li>The cost of an additional application is 107 <span class="math inline">\(\pm\)</span> 64 <em>2016USD</em>.</li>
+</ol>
+<p>Here is how we extracted the results from the paper.</p>
+<div id="estimated-treatment-effects-and-their-precision" class="section level1">
+<h1>Estimated treatment effects and their precision</h1>
+<div id="estimated-treatment-effects" class="section level2">
+<h2>Estimated treatment effects</h2>
+<p>Table 1 in the paper reports the proportion of farmers enrolling into the CSP (submitting an application file) under the control and treatment conditions (in percent):</p>
+<ul>
+<li>Control (no letter): <span class="math inline">\(1.009\)</span>,</li>
+<li>Treatment 1 (standard letter): <span class="math inline">\(2.083\)</span></li>
+<li>Treatment 2 (photocopied empathy nudge): <span class="math inline">\(1.798\)</span></li>
+<li>Treatment 3 (handwritten empathy nudge): <span class="math inline">\(2.412\)</span></li>
+<li>All treatments combined: <span class="math inline">\(2.097\)</span></li>
+</ul>
+<p>Thanks to these numbers, we can build estimates of the treatment effects of each treatent (in percentage points). Let’s do that:</p>
+<pre class="r"><code># enrollment rates (in percent)
+czap.mean &lt;- c(1.009,2.083,1.798,2.412,2.097)
+names(czap.mean) &lt;- c(&quot;Control&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;All&quot;)
+# treatment effects vs control
+czap.TE &lt;- czap.mean[2:5]-czap.mean[[1]]
+# treatment effects between treatments
+czap.TE[5:6] &lt;- czap.mean[3:4]-czap.mean[[2]]
+czap.TE[7] &lt;- czap.mean[4]-czap.mean[[3]]
+names(czap.TE)[5:7] &lt;- c(&quot;2vs1&quot;,&quot;3vs1&quot;,&quot;3vs2&quot;)</code></pre>
+</div>
+<div id="precision-of-treatment-effects" class="section level2">
+<h2>Precision of treatment effects</h2>
+<p>One difficulty that we have is that Czap et al (2019) do not provide standard errors. They do provide <span class="math inline">\(p-\)</span>values though and we are going to try to use these as a way to back out precision. The <span class="math inline">\(p-\)</span>value of the mean difference between any of the treatment conditions <em>vs</em> the control group is smaller than <span class="math inline">\(0.001\)</span>. It is also the case for each of the three independent treatments taken in isolation. The differences between treatment conditions are all non significantly different from zero, except the one between Treatment 2 and Treatment 3, which has a <span class="math inline">\(p-\)</span>value of <span class="math inline">\(0.02\)</span>. We are going to invert these <span class="math inline">\(p-\)</span>values and to apply the resulting precision estimate to the other comparisons between treatments.</p>
+<pre class="r"><code># function for inverting p-values
+se.pval &lt;- function(pval,beta){
+  return(beta/qnorm(1-pval/2))
+}
+
+# pvalues
+czap.pval &lt;- c(0.001,0.001,0.001,0.001,0.02,0.02,0.02)
+names(czap.pval) &lt;- names(czap.TE)
+
+# computing precision
+czap.se &lt;- rep(0,length(czap.pval))
+names(czap.se) &lt;- names(czap.TE)
+# for treatment against control
+czap.se[1:4] &lt;- purrr::map2_dbl(czap.pval[1:4],czap.TE[1:4],se.pval)
+# we replace the individual treatment estimates of precision by the least precise one
+czap.se[1:2] &lt;- czap.se[[3]]
+
+# for treatment 3 against 2
+czap.se[7] &lt;- purrr::map2_dbl(czap.pval[7],czap.TE[7],se.pval)
+# we replace the individual treatment estimates of precision by the last one
+czap.se[5:6] &lt;- czap.se[[7]]
+
+# putting results together in a dataframe
+czap &lt;- as.data.frame(cbind(czap.TE,czap.se))
+colnames(czap) &lt;- c(&#39;TE&#39;,&#39;SeTE&#39;)
+czap$Treatment &lt;- rownames(czap)</code></pre>
+</div>
+</div>
+<div id="cost-effectiveness-of-each-treatment" class="section level1">
+<h1>Cost-effectiveness of each treatment</h1>
+<p>Czap et al (2019) report a cost per letter of <span class="math inline">\(c=1.16\)</span> <em>2016USD</em>. That means that cost-effectiveness can be estimated by dividing <span class="math inline">\(c\)</span> by the treatment effect (or additional number of contracts per letter): <span class="math inline">\(\hat{CE}=\frac{c}{\hat\beta}\)</span>. The standard error of the cost effectiveness can be obtained by the delta method: <span class="math inline">\(\hat\sigma_{CE}=\frac{c}{\hat\beta^2}\hat\sigma_{\beta}\)</span>. Let us now compute these terms for the two samples.</p>
+<pre class="r"><code># function for computing standard error of cost-effectiveness 
+se.CE &lt;- function(beta,sigmabeta,c=1.16){
+  return(sigmabeta*c/(beta^2))
+}
+
+# generate cost-effectiveness
+c &lt;- 1.16 # cost per letter in dollars 2012
+czap &lt;- czap %&gt;%
+          mutate(
+            TE = TE*100, # all effects per 10000 letters
+            SeTE = SeTE*100,# all effects per 10000 letters
+            CE = c*10000/TE,# cost of 10000 letters divided by number of contracts
+            SeCE = map2_dbl(TE,SeTE,se.CE,c=c*10000) #standard error
+          )</code></pre>
+</div>
+<div id="sending-results-to-skai" class="section level1">
+<h1>Sending results to SKAI</h1>
+<p>We are now ready to send our results to SKAI.</p>
+<pre class="r"><code># reading connection informations
+source(here::here(&quot;idSQL.R&quot;))
+# connecting to SQL server
+HdF &lt;- dbConnect(MySQL(), dbname=&quot;HdF&quot;,
+                     user=myid, password=mypass, host=myhost)
+# sending Results table
+dbWriteTable(HdF,&quot;czap&quot;,czap,overwrite=TRUE)
+# commenting the table
+dbSendQuery(HdF,&quot;ALTER TABLE `HdF`.`czap` 
+    CHANGE COLUMN `TE` `TE` DOUBLE NULL DEFAULT NULL COMMENT &#39;The effect of the treatment measured as an increase in contract applications per 10000 farmers.&#39; ,
+    CHANGE COLUMN `SeTE` `SeTE` DOUBLE NULL DEFAULT NULL COMMENT &#39;The standard error of the estimated treatment effect.&#39; ,
+    CHANGE COLUMN `Treatment` `Treatment` TEXT NULL DEFAULT NULL COMMENT &#39;The treatment analysed.\nAll refers to all the treatments combined.\nTreatment 1: standard letter with the usual focus on the financial incentives offered by the program administrators. \nTreatment 2: photocopied empathy nudge. The language related to empathy nudging included: &#39;&#39;In the last two years, over 1600 of your fellow Nebraska farmers joined the common cause and enrolled/re-enrolled into the Conservation Stewardship Program.&#39;&#39; and &#39;&#39;Consider our role as caretakers of our natural resources, on which we depend on for our survival. Consider the impact of your decisions on wildlife habitat, water and air quality, your local community, and future generations.&#39;&#39; &#39;&#39;Join your fellow Nebraska farmers and ranchers in protecting our land!&#39;&#39; was added at the bottom of the letter next to the signature. The mention was written by the state conservationist and photocopied on every letter sent in the treatment 2 condition.\nTreatment 3: same as treatment 2 except that the empathy nudge was handwritten by research assistants.&#39; ,     
+    CHANGE COLUMN `CE` `CE` DOUBLE NULL DEFAULT NULL COMMENT &#39;Cost-effectiveness of the treatment, in 2016 dollars by additional contract.&#39;,
+    CHANGE COLUMN `SeCE` `SeCE` DOUBLE NULL DEFAULT NULL COMMENT &#39;Standards error of the cost-effectiveness of the treatment, in 2016 dollars by additional contract.&#39;,    
+    COMMENT = &#39;Table containing the estimated treatment effects of the letters sent to nudge farmers to subscribe Payments for Environmental Services in the CSP experiment of Czap et al (2019).&#39; ;
+&quot;)
+# disconnecting the connection to the SQL server
+dbDisconnect(HdF)</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

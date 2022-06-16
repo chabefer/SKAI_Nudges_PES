@@ -1,9 +1,448 @@
 
+```{r libs, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE}
+library(tidyverse)
+library(RMySQL)
+```
 
-This is a [SKY](https://chabefer.github.io/SKY/index.html) website examining **your topic**.
+This is a [SKAI](https://chabefer.github.io/SKY/index.html) website examining the impact of nudging farmers to take up Payments for Environmental Services.
 
-This website contains:
+Payments for Environmental Services (PES) are contracts between a service provider (a farmer or a landowner) and a service buyer (the government, an NGO or a private entity), in which providers receive a monetary compensation in exchange for the adoption of practices more favorable to the environment.
+PES sometimes face low subscription rates which jeopardize their environmental effectiveness. 
+This page synthetizes the results of three large randomized experiments conducted in both the US and the EU to test whether nudges sent by mail can increase the subscription rate of PES:
 
-* [Topic 1](name1.html)
-* [Topic 2](name2.html)
-* [Topic 3](name3.html)
+* [Wallander et al (2017): Nudging participation in the Conservation Reserve Program in the US](wallander.html)
+* [Czap et al (2019): Nudging participation in the Conservation Stewardship Program in the US](czap.html)
+* [Chabe-Ferret et al (2022): Nudging participation in the Payments for Environmental Services Program in the EU](chabe.html)
+
+```{r MainMetaNudgesPES, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE}
+# reading connection informations
+source(here::here("idSQL.R"))
+# connecting to SQL server
+HdF <- dbConnect(MySQL(), dbname="HdF",
+                     user=myid, password=mypass, host=myhost)
+# reading Results table
+MetaNudgesPES <- dbReadTable(HdF,"MetaPES") %>%
+              mutate(
+                Treatment = factor(Treatment,levels=c("All Nudges (Est.)","Simple Letter","All (France)","Simple Nudge vs Simple Letter","Elaborate Nudge vs Simple Letter")),
+                Treatment = recode(Treatment,"Simple Nudge vs Simple Letter"="Simple Nudge","Elaborate Nudge vs Simple Letter"="Elaborate Nudge"),
+                Type = factor(Type,levels=c("Treatment Effect","Cost-Effectiveness")),
+                Method= factor(Method,levels=c("Meta-analysis","PEESE"))
+              )
+wallander <- dbReadTable(HdF,"wallander") %>%
+              mutate(
+                Treatment = factor(Treatment,levels=c('All','1','2','3',"2vs1","3vs1","3vs2")),
+                Group = factor(Group,levels=c('Unenrolled','Expiring'))
+              )
+chabe <- dbReadTable(HdF,"Results") %>%
+              mutate(
+                   Treatment=factor(Treatment,levels=c("All","Bare Letter","Bare Letter+Testimonies","Bare Letter+Testimonies+Pre-Stamped Reply Form","Testimonies vs Bare Letter","Testimonies+Pre-Stamped Reply Form vs Bare Letter","Pre-Stamped Reply Form vs Testimonies")),
+                  Treatment= factor(as.character(as.numeric(Treatment)-1),levels=as.character(0:6)),
+                  Treatment=recode(Treatment,"0"="All"
+                                            ,"4"="2vs1"
+                                            ,"5"="3vs1"
+                                            ,"6"="3vs2")
+                  )
+# disconnecting the connection to the SQL server
+dbDisconnect(HdF)
+
+# regrouping wallander with meta
+wallander <- wallander %>%
+            filter(Treatment=="All",Group=="Unenrolled") %>%
+            select(TE,SeTE,Treatment) %>%
+              mutate(
+                Treatment= recode(Treatment,"All"="All Nudges (Est.)"),
+                Treatment = factor(Treatment,levels=c("All Nudges (Est.)","Simple Letter","All (France)","Simple Nudge vs Simple Letter","Elaborate Nudge vs Simple Letter")),
+                Type="Treatment Effect",
+                Type = factor(Type,levels=c("Treatment Effect","Cost-Effectiveness")),
+                Method="Meta-analysis",
+                Method= factor(Method,levels=c("Meta-analysis","PEESE"))
+              ) %>%
+              rename(
+                Effects = TE,
+                SeEffects = SeTE
+              )
+
+# regrouping chabe-ferret with meta (CE data for NPdC and diffusion effects)
+chabe <- chabe %>%
+          filter(Treatment=="All",Outcome=="Contracts") %>%
+          select(Treatment,CENPdCDiff,SeCENPdCDiff) %>%
+          mutate(
+            Treatment= recode(Treatment,"All"="All (France)"), #it would be more correct to generate CE for the simple letter (it would be smaller)
+            Treatment = factor(Treatment,levels=c("All Nudges (Est.)","Simple Letter","All (France)","Simple Nudge vs Simple Letter","Elaborate Nudge vs Simple Letter")),
+            Type="Cost-Effectiveness",
+            Type = factor(Type,levels=c("Treatment Effect","Cost-Effectiveness")),
+            Method="PEESE",
+            Method= factor(Method,levels=c("Meta-analysis","PEESE"))
+          ) %>%
+          rename(
+            Effects = CENPdCDiff,
+            SeEffects = SeCENPdCDiff
+          )
+ 
+# regrouping  
+MetaNudgesPES <- rbind(MetaNudgesPES,wallander,chabe)              
+```
+
+```{r MainMetaPlot, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE,fig.cap=c('Impact and cost-effectiveness of the treatments'),fig.subcap=c('Treatment effects','Cost-effectiveness'),fig.align='center', out.width="50%", fig.height=4, fig.width=6}
+# generating plot for treatment effects for expiring contracts or recent program
+ggplot(filter(MetaNudgesPES,Type=="Treatment Effect"),aes(Treatment,Effects,group=Method,color=Method)) +
+  geom_pointrange(aes(ymin=Effects-1.96*SeEffects,ymax=Effects+1.96*SeEffects),position=position_dodge(0.7))+
+  coord_cartesian(ylim=c(-50,200))+
+ ylab("Number of additional contracts (per 10000 letters)")+
+#  coord_flip()+
+  theme_bw()
+
+# generating plot for cost-effectiveness
+ggplot(filter(MetaNudgesPES,Type=="Cost-Effectiveness",Treatment=="Simple Letter" | Treatment=="All (France)"),aes(Treatment,Effects,group=Method,color=Method)) +
+  geom_pointrange(aes(ymin=Effects-1.96*SeEffects,ymax=Effects+1.96*SeEffects),position=position_dodge(0.7))+
+  coord_cartesian(ylim=c(0,200))+
+ ylab("Cost per additional contract (in 2012 USD)")+
+  xlab("Non established program")+
+  theme_bw()
+```
+
+The main results of this literature are as follows:
+  
+  1. There is **no impact of a simple letter (or of any nudge) on PES enrollment for farmers that never enrolled into a long established program**. 
+  The null effect estimated by [Wallander et al (2017)](wallander.html) is very precise (`r MetaNudgesPES %>% filter(Type=='Treatment Effect',Treatment=='All Nudges (Est.)',Method=='Meta-analysis') %>% pull(Effects) %>% round(.,0)` $\pm$ `r 2*(MetaNudgesPES %>% filter(Type=='Treatment Effect',Treatment=='All Nudges (Est.)',Method=='Meta-analysis') %>% pull(SeEffects) %>% round(.,0))` contract applications per 10000 letters).  
+  2. There is a **clear impact of sending a simple letter on farmers enrolled in a new program or on farmers with expiring contracts into a long established program**.
+  The impact differs strongly between a simple meta-analysis and the PEESE estimate, suggesting an important role for publication bias.
+  The most conservative estimates obtained using PEESE are of `r MetaNudgesPES %>% filter(Type=='Treatment Effect',Treatment=='Simple Letter',Method=='PEESE') %>% pull(Effects) %>% round(.,0)` $\pm$ `r 2*(MetaNudgesPES %>% filter(Type=='Treatment Effect',Treatment=='Simple Letter',Method=='PEESE') %>% pull(SeEffects) %>% round(.,0))` additional contracts per 10000 letters for a cost of `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='Simple Letter',Method=='PEESE') %>% pull(Effects) %>% round(.,0)` $\pm$ `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='Simple Letter',Method=='PEESE') %>% pull(SeEffects) %>% round(.,0)` USD per additional contract.
+  3. **Simple nudges referencing the participation of similar farmers to the PES program are counterproductive**.
+  Adding them to the simple letter has an impact of `r MetaNudgesPES %>% filter(Type=='Treatment Effect',Treatment=='Simple Nudge',Method=='Meta-analysis') %>% pull(Effects) %>% round(.,0)` $\pm$ `r 2*(MetaNudgesPES %>% filter(Type=='Treatment Effect',Treatment=='Simple Nudge',Method=='Meta-analysis') %>% pull(SeEffects) %>% round(.,0))` contracts per 10000 letters when using the simple meta-analysis and `r MetaNudgesPES %>% filter(Type=='Treatment Effect',Treatment=='Simple Nudge',Method=='PEESE') %>% pull(Effects) %>% round(.,0)` $\pm$ `r 2*(MetaNudgesPES %>% filter(Type=='Treatment Effect',Treatment=='Simple Nudge',Method=='PEESE') %>% pull(SeEffects) %>% round(.,0))` contracts per 10000 letters when using PEESE.
+  4. **More elaborate nudges such as adding handwritten encouragement notes or easy to use reply forms might be beneficial to participation**, but precision is still too low to conclude.
+  The most favorable elaborate nudge is the inclusion of a handwritten encouragement note studied by [Czap et al (2019)](czap.html).
+  5. **Leveraging word of mouth and diffusion effects might make sending simple letters even more cost-effective**, as shown by [Chabe-Ferret et al (2022)](chabe.html).
+  The estimated cost-effectiveness in the region where this treatment works best moves to `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='All (France)',Method=='PEESE') %>% pull(Effects) %>% round(.,0)` $\pm$ `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='All (France)',Method=='PEESE') %>% pull(SeEffects) %>% round(.,0)` USD per additional contract (contrast with the estimates ignoring diffusion effects: `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='Simple Letter',Method=='PEESE') %>% pull(Effects) %>% round(.,0)` $\pm$ `r MetaNudgesPES %>% filter(Type=='Cost-Effectiveness',Treatment=='Simple Letter',Method=='PEESE') %>% pull(SeEffects) %>% round(.,0)` USD per additional contract).
+  More results on larger datasets are needed in order to pin down the real magnitude of cost savings.
+
+```{r Main, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE}
+# reading connection informations
+source(here::here("idSQL.R"))
+# connecting to SQL server
+HdF <- dbConnect(MySQL(), dbname="HdF",
+                     user=myid, password=mypass, host=myhost)
+# reading Results table
+wallander <- dbReadTable(HdF,"wallander") %>%
+              mutate(
+                Treatment = factor(Treatment,levels=c('All','1','2','3','2vs1','3vs1','3vs2')),
+                Group = factor(Group,levels=c('Unenrolled','Expiring')),
+                Paper="Wallander et al (2017)"
+              )
+czap <- dbReadTable(HdF,"czap") %>%
+              mutate(
+                Treatment = factor(Treatment,levels=c('All','1','2','3','2vs1','3vs1','3vs2')),
+                Group="Expiring",
+                Paper="Czap et al (2019)"
+              )
+chabe <- dbReadTable(HdF,"Results")%>%
+              mutate(
+                   Treatment=factor(Treatment,levels=c("All","Bare Letter","Bare Letter+Testimonies","Bare Letter+Testimonies+Pre-Stamped Reply Form","Testimonies vs Bare Letter","Testimonies+Pre-Stamped Reply Form vs Bare Letter","Pre-Stamped Reply Form vs Testimonies")),
+                  Treatment= factor(as.character(as.numeric(Treatment)-1),levels=as.character(0:6)),
+                  Treatment=recode(Treatment,"0"="All"
+                                            ,"4"="2vs1"
+                                            ,"5"="3vs1"
+                                            ,"6"="3vs2"),
+                  Group="Expiring",
+                  Paper="Chabe-Ferret et al (2022)"
+                  ) %>%
+                  filter(Outcome=="Contracts") %>%
+                  select(-Outcome,-contains("Diff"),-contains("NPdC"))
+# disconnecting the connection to the SQL server
+dbDisconnect(HdF)
+
+# putting results together
+NudgesPES <- rbind(wallander,czap,chabe)
+```
+
+Below is how we obtained these results.
+
+# Effect and cost-effectiveness of a simple letter
+
+Let us plot the impact of the standard letter on the number of applications as a function of precision, excluding the sample of farmers that never enrolled in the program for a long time:
+
+```{r MainPlot, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE,fig.cap=c('Impact of a simple letter'),fig.align='center', out.width="50%", fig.height=4, fig.width=6}
+# generating plot for treatment effects
+ggplot(filter(NudgesPES,Treatment=="1",Group=="Expiring"),aes(SeTE,TE,group=Paper,color=Paper)) +
+  geom_pointrange(aes(ymin=TE-1.96*SeTE,ymax=TE+1.96*SeTE),position=position_dodge(0.7))+
+ ylab("Number of additional contracts (per 10000 letters)")+
+ xlab("Standard error of the treatment effect")+
+  coord_cartesian(ylim=c(0,300))+
+  theme_bw()
+
+```
+
+The plot for treatment effects suggests a positive correlation between effect and standard error, which is suggestive of publication bias. 
+As a consequence, we conduct a meta-analytic regression correcting for publication bias using the [PEESE estimator](https://chabefer.github.io/SKY_Correct_Pub_Bias/). 
+
+```{r MetaNudgesPES, echo=TRUE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE}
+# generating weights
+NudgesPES <- NudgesPES %>%
+              mutate(weightsTE = 1/SeTE)
+# sum of weights
+sum.weights.TE <- sum(filter(NudgesPES,Treatment=="1",Group=="Expiring")$weightsTE)
+NudgesPES <- NudgesPES %>%
+              mutate(
+                weightsTE= weightsTE/sum.weights.TE,
+                varTE = SeTE^2
+                     )
+
+# Meta
+Meta.nudge.PES <- lm(TE ~ 1,weights=weightsTE, data=filter(NudgesPES,Treatment=="1",Group=="Expiring"))
+nudge.TE.Meta <- Meta.nudge.PES$coefficients[[1]]
+nudge.SeTE.Meta <- sqrt(diag(vcov((Meta.nudge.PES))))[[1]]
+
+# PEESE
+PEESE.nudge.PES <- lm(TE ~ varTE,weights=weightsTE, data=filter(NudgesPES,Treatment=="1",Group=="Expiring"))
+nudge.TE.PEESE <- PEESE.nudge.PES$coefficients[[1]]
+nudge.SeTE.PEESE<- sqrt(diag(vcov((PEESE.nudge.PES))))[[1]]
+
+# cost effectiveness
+nudge.CE.Meta <- (0.60*10000)/nudge.TE.Meta
+nudge.SeCE.Meta <- (0.60*10000)*nudge.SeTE.Meta/(nudge.TE.Meta^2)
+nudge.CE.PEESE <- (0.60*10000)/nudge.TE.PEESE
+nudge.SeCE.PEESE <- (0.60*10000)*nudge.SeTE.PEESE/(nudge.TE.PEESE^2)
+
+# Sending results to original table
+Meta.Nudges.1 <- NudgesPES %>%
+                  filter(Treatment=="1",Group=="Expiring")%>%
+                  select(TE,SeTE,Paper) %>%
+                  mutate(SeTE2 = SeTE)
+
+Meta.Nudges.1[nrow(Meta.Nudges.1)+1,] <- c(nudge.TE.PEESE,nudge.SeTE.PEESE,"PEESE",0)
+Meta.Nudges.1[nrow(Meta.Nudges.1)+1,] <- c(nudge.TE.Meta,nudge.SeTE.Meta,"Meta-analysis",0)
+
+Meta.Nudges.1 <- Meta.Nudges.1 %>%
+                  mutate(
+                    TE=as.numeric(TE),
+                    SeTE=as.numeric(SeTE),
+                    SeTE2=as.numeric(SeTE2),
+                    Paper=factor(Paper,levels=c("Chabe-Ferret et al (2022)","Czap et al (2019)","Wallander et al (2017)","Meta-analysis","PEESE"))
+                         ) 
+
+# PEESE function
+PEESE.fun <- function(se,alpha,beta){
+  return(alpha+beta*se^2)
+}
+```
+
+Here is the result of this analysis:
+
+```{r PlotLetterPEESE, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE,fig.cap=c('Impact of a simple letter (with meta-analysis)'),fig.align='center', out.width="50%", fig.height=4, fig.width=6}
+# generating plot for treatment effects
+ggplot(Meta.Nudges.1,aes(SeTE2,TE,group=Paper,color=Paper)) +
+  geom_pointrange(aes(ymin=TE-1.96*SeTE,ymax=TE+1.96*SeTE,color=Paper),position=position_dodge(0.9))+
+  geom_function(fun=PEESE.fun,args=list(alpha=PEESE.nudge.PES$coefficients[[1]],beta=PEESE.nudge.PES$coefficients[[2]]),color="purple",linetype="dotted")+
+  geom_hline(aes(yintercept=Meta.nudge.PES$coefficients[[1]],color="Meta-analysis"),linetype="dotted")+
+ ylab("Number of additional contracts (per 10000 letters)")+
+ xlab("Standard error of the treatment effect")+
+  coord_cartesian(ylim=c(0,300))+
+  theme_bw()
+
+```
+
+
+The results suggest an estimated impact of the simple letter of `r round(nudge.TE.Meta,0)` $\pm$ `r round(1.96*nudge.SeTE.Meta,0)` contracts per 10000 letters when using the simple meta-analysis and `r round(nudge.TE.PEESE,0)` $\pm$ `r round(1.96*nudge.SeTE.PEESE,0)` additional contracts per 10000 letters when using PEESE.
+For a cost per letter of around 60 cents (in Euros or USD, since the exchange rate was close to one over the period and inflation was fairly low), we find, using the formula $\hat\sigma_{CE}=\frac{c}{\hat\beta^2}\hat\sigma_{\beta}$, that cost-effectiveness is equal to `r round(nudge.CE.Meta,0)` $\pm$ `r round(1.96*nudge.SeCE.Meta,0)` USD per additional contract with the simple meta-analysis and `r round(nudge.CE.PEESE,0)` $\pm$ `r round(1.96*nudge.SeCE.PEESE,0)` USD per additional contract.
+
+# Effect and cost-effectiveness of nudges
+
+There are two types of nudges: simple nudges mostly referencing otger participants, and more complex nudges such as pre-stamped reply forms, regional peer comparisons or adding a handwritten note.
+
+## Simple nudges referencing other participants
+
+Let us now examine the effect of simple nudges.
+Treatment 2 in all three studies is a nudge added on top of the plain letter.
+In all three studies, the nudge focuses on a comparison with farmers already enrolled from the program.
+In [Wallander et al (2017)](wallander.html), Treatment 2 is a side box that told farmers how other stewards in their state had provided ecosystem services for their neighbors through participation in CRP, suggesting the popularity of CRP.
+In [Czap et al (2019)](czap.html), Treatment 2 is an empathy nudge going along the same lines, focusing on other participants in the program: ''In the last two years, over 1600 of your fellow Nebraska farmers joined the common cause and enrolled/re-enrolled into the Conservation Stewardship Program.''
+Finally, in [Chabe-Ferret et al (2022)](chabe.html), Treatment 2 includes testimonies by farmers already benefiting from the program.
+Let's examine how these treatments fare when compared with the simple letter.
+
+```{r PlotNudge2, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE,fig.cap=c('Impact of adding simple nudges to a simple letter'),fig.align='center', out.width="50%", fig.height=4, fig.width=6}
+# generating plot for treatment effects
+ggplot(filter(NudgesPES,Treatment=="2vs1",Group=="Expiring"),aes(SeTE,TE,group=Paper,color=Paper)) +
+  geom_pointrange(aes(ymin=TE-1.96*SeTE,ymax=TE+1.96*SeTE),position=position_dodge(0.7))+
+ ylab("Number of additional contracts (per 10000 letters)")+
+ xlab("Standard error of the treatment effect")+
+#  coord_cartesian(ylim=c(0,300))+
+  theme_bw()
+```
+
+Let us now estimate the meta-anaytic effect (there does not seem to be indications of publication bias here):
+
+```{r MetaNudges2PES, echo=TRUE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE}
+# sum of weights
+sum.weights.TE.2 <- sum(filter(NudgesPES,Treatment=="2vs1",Group=="Expiring")$weightsTE)
+NudgesPES <- NudgesPES %>%
+              mutate(
+                weightsTE2= weightsTE/sum.weights.TE.2
+                     )
+
+# Meta
+Meta.nudge.PES.2 <- lm(TE ~ 1,weights=weightsTE2, data=filter(NudgesPES,Treatment=="2vs1",Group=="Expiring"))
+nudge.TE.Meta.2 <- Meta.nudge.PES.2$coefficients[[1]]
+nudge.SeTE.Meta.2<- sqrt(diag(vcov((Meta.nudge.PES.2))))[[1]]
+
+# PEESE
+PEESE.nudge.PES.2 <- lm(TE ~ varTE,weights=weightsTE2, data=filter(NudgesPES,Treatment=="2vs1",Group=="Expiring"))
+nudge.TE.PEESE.2 <- PEESE.nudge.PES.2$coefficients[[1]]
+nudge.SeTE.PEESE.2<- sqrt(diag(vcov((PEESE.nudge.PES.2))))[[1]]
+
+# Sending results to original table
+Meta.Nudges.2 <- NudgesPES %>%
+                  filter(Treatment=="2vs1",Group=="Expiring")%>%
+                  select(TE,SeTE,Paper) %>%
+                  mutate(SeTE2 = SeTE)
+
+Meta.Nudges.2[nrow(Meta.Nudges.2)+1,] <- c(nudge.TE.PEESE.2,nudge.SeTE.PEESE.2,"PEESE",0)
+Meta.Nudges.2[nrow(Meta.Nudges.2)+1,] <- c(nudge.TE.Meta.2,nudge.SeTE.Meta.2,"Meta-analysis",0)
+
+Meta.Nudges.2 <- Meta.Nudges.2 %>%
+                  mutate(
+                    TE=as.numeric(TE),
+                    SeTE=as.numeric(SeTE),
+                    SeTE2=as.numeric(SeTE2),
+                    Paper=factor(Paper,levels=c("Chabe-Ferret et al (2022)","Czap et al (2019)","Wallander et al (2017)","Meta-analysis","PEESE"))
+                         ) 
+
+```
+
+Here is the result of this analysis:
+
+```{r PlotNudgePEESE, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE,fig.cap=c('Impact of simple nudges to a simple letter (with meta-analysis)'),fig.align='center', out.width="50%", fig.height=4, fig.width=6}
+# generating plot for treatment effects
+ggplot(Meta.Nudges.2,aes(SeTE2,TE,group=Paper,color=Paper)) +
+  geom_pointrange(aes(ymin=TE-1.96*SeTE,ymax=TE+1.96*SeTE,color=Paper),position=position_dodge(0.9))+
+  geom_function(fun=PEESE.fun,args=list(alpha=PEESE.nudge.PES.2$coefficients[[1]],beta=PEESE.nudge.PES.2$coefficients[[2]]),color="purple",linetype="dotted")+
+  geom_hline(aes(yintercept=Meta.nudge.PES.2$coefficients[[1]],color="Meta-analysis"),linetype="dotted")+
+ ylab("Number of additional contracts (per 10000 letters)")+
+ xlab("Standard error of the treatment effect")+
+#  coord_cartesian(ylim=c(0,300))+
+  theme_bw()
+
+```
+The impact of adding a nudge referencing other participants is `r round(nudge.TE.Meta.2,0)` $\pm$ `r round(1.96*nudge.SeTE.Meta.2,0)` contracts per 10000 letters when using the simple meta-analysis and `r round(nudge.TE.PEESE.2,0)` $\pm$ `r round(1.96*nudge.SeTE.PEESE.2,0)` contracts per 10000 letters when using PEESE.
+Adding a nudge referencing other participants decreases participation in the program.
+
+## More elaborate nudges
+
+Let us now examine the effect of more elaborate nudges.
+Treatment 3 in all three studies is a nudge added on top of the plain letter and the basic nudge of Treatment 2.
+In all three studies, the additional nudges differ a bit.
+In [Wallander et al (2017)](wallander.html), Treatment 3 consists in two boxes, one emphasizing the stability of CRP payments and the other using peer comparison to signal the regional popularity of CRP.
+In [Czap et al (2019)](czap.html), Treatment 3 contains the handwritten the mention ''Join your fellow Nebraska farmers and ranchers in protecting our land!''
+In Treatment 2, this mention was photocopied instead.
+Finally, in [Chabe-Ferret et al (2022)](chabe.html), Treatment 3 consists in a pre-stamped reply form decreasing the cost of contacting the caseworker in charge of the program.
+These treatments are more heterogeneous than Treatment 2.
+Let's examine how these treatments fare when compared with the simple letter.
+
+```{r PlotNudge3, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE,fig.cap=c('Impact of adding elaborate nudges to a simple letter'),fig.align='center', out.width="50%", fig.height=4, fig.width=6}
+# generating plot for treatment effects
+ggplot(filter(NudgesPES,Treatment=="3vs1",Group=="Expiring"),aes(SeTE,TE,group=Paper,color=Paper)) +
+  geom_pointrange(aes(ymin=TE-1.96*SeTE,ymax=TE+1.96*SeTE),position=position_dodge(0.7))+
+ ylab("Number of additional contracts (per 10000 letters)")+
+ xlab("Standard error of the treatment effect")+
+#  coord_cartesian(ylim=c(0,300))+
+  theme_bw()
+```
+
+Let us now estimate the meta-analytic effect (there does not seem to be indications of publication bias here):
+
+```{r MetaNudges3PES, echo=TRUE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE}
+# sum of weights
+sum.weights.TE.3 <- sum(filter(NudgesPES,Treatment=="3vs1",Group=="Expiring")$weightsTE)
+NudgesPES <- NudgesPES %>%
+              mutate(
+                weightsTE3= weightsTE/sum.weights.TE.3
+                     )
+
+# Meta
+Meta.nudge.PES.3 <- lm(TE ~ 1,weights=weightsTE3, data=filter(NudgesPES,Treatment=="3vs1",Group=="Expiring"))
+nudge.TE.Meta.3 <- Meta.nudge.PES.3$coefficients[[1]]
+nudge.SeTE.Meta.3 <- sqrt(diag(vcov((Meta.nudge.PES.3))))[[1]]
+
+# PEESE
+PEESE.nudge.PES.3 <- lm(TE ~ varTE,weights=weightsTE3, data=filter(NudgesPES,Treatment=="3vs1",Group=="Expiring"))
+nudge.TE.PEESE.3 <- PEESE.nudge.PES.3$coefficients[[1]]
+nudge.SeTE.PEESE.3 <- sqrt(diag(vcov((PEESE.nudge.PES.3))))[[1]]
+
+# Sending results to original table
+Meta.Nudges.3 <- NudgesPES %>%
+                  filter(Treatment=="3vs1",Group=="Expiring")%>%
+                  select(TE,SeTE,Paper) %>%
+                  mutate(SeTE2 = SeTE)
+
+Meta.Nudges.3[nrow(Meta.Nudges.3)+1,] <- c(nudge.TE.PEESE.3,nudge.SeTE.PEESE.3,"PEESE",0)
+Meta.Nudges.3[nrow(Meta.Nudges.3)+1,] <- c(nudge.TE.Meta.3,nudge.SeTE.Meta.3,"Meta-analysis",0)
+
+Meta.Nudges.3 <- Meta.Nudges.3 %>%
+                  mutate(
+                    TE=as.numeric(TE),
+                    SeTE=as.numeric(SeTE),
+                    SeTE2=as.numeric(SeTE2),
+                    Paper=factor(Paper,levels=c("Chabe-Ferret et al (2022)","Czap et al (2019)","Wallander et al (2017)","Meta-analysis","PEESE"))
+                         ) 
+
+```
+
+Here is the result of this analysis:
+
+```{r PlotNudgeElaboratePEESE, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE,fig.cap=c('Impact of elaborate nudges to a simple letter (with meta-analysis)'),fig.align='center', out.width="50%", fig.height=4, fig.width=6}
+# generating plot for treatment effects
+ggplot(Meta.Nudges.3,aes(SeTE2,TE,group=Paper,color=Paper)) +
+  geom_pointrange(aes(ymin=TE-1.96*SeTE,ymax=TE+1.96*SeTE,color=Paper),position=position_dodge(0.9))+
+  geom_function(fun=PEESE.fun,args=list(alpha=PEESE.nudge.PES.3$coefficients[[1]],beta=PEESE.nudge.PES.3$coefficients[[2]]),color="purple",linetype="dotted")+
+  geom_hline(aes(yintercept=Meta.nudge.PES.3$coefficients[[1]],color="Meta-analysis"),linetype="dotted")+
+ ylab("Number of additional contracts (per 10000 letters)")+
+ xlab("Standard error of the treatment effect")+
+#  coord_cartesian(ylim=c(0,300))+
+  theme_bw()
+
+```
+The impact of adding a nudge referencing other participants is `r round(nudge.TE.Meta.3,0)` $\pm$ `r round(1.96*nudge.SeTE.Meta.3,0)` contracts per 10000 letters when using the simple meta-analysis and `r round(nudge.TE.PEESE.3,0)` $\pm$ `r round(1.96*nudge.SeTE.PEESE.3,0)` contracts per 10000 letters when using PEESE.
+It is unclear whether these more elaborate nudges help or not.
+The handwritten note seems to be the most promising one.
+
+# Sending results to SKAI
+
+We are now ready to send the main results from our meta-analysis to SKAI.
+We first need to build a table containing the meta-analytical results.
+
+```{r TableMeta, echo=TRUE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE}
+# Treatment Effects
+Effects <- c(nudge.TE.Meta,nudge.TE.PEESE,nudge.TE.Meta.2,nudge.TE.PEESE.2,nudge.TE.Meta.3,nudge.TE.PEESE.3,nudge.CE.Meta,nudge.CE.PEESE)
+SeEffects <- c(nudge.SeTE.Meta,nudge.SeTE.PEESE,nudge.SeTE.Meta.2,nudge.SeTE.PEESE.2,nudge.SeTE.Meta.3,nudge.SeTE.PEESE.3,nudge.SeCE.Meta,nudge.SeCE.PEESE)
+ResultsMetaPES <- as.data.frame(cbind(Effects,SeEffects))
+# Table
+ResultsMetaPES$Type <- c(rep("Treatment Effect",6),rep("Cost-Effectiveness",2))
+ResultsMetaPES$Treatment <- c(rep("Simple Letter",2),rep("Simple Nudge vs Simple Letter",2),rep("Elaborate Nudge vs Simple Letter",2),rep("Simple Letter",2))
+ResultsMetaPES$Method <- rep(c("Meta-analysis","PEESE"),4)
+```
+
+Let's send the results to SKAI:
+
+```{r MetaSKAI, echo=TRUE, warning=FALSE, error=FALSE, message=FALSE,results=FALSE}
+# reading connection informations
+source(here::here("idSQL.R"))
+# connecting to SQL server
+HdF <- dbConnect(MySQL(), dbname="HdF",
+                     user=myid, password=mypass, host=myhost)
+# sending Results table
+dbWriteTable(HdF,"MetaPES",ResultsMetaPES,overwrite=TRUE)
+# commenting the table
+dbSendQuery(HdF,"ALTER TABLE `HdF`.`MetaPES` 
+    CHANGE COLUMN `Effects` `Effects` DOUBLE NULL DEFAULT NULL COMMENT 'The effect of the treatment measured as an increase in contract applications per 10000 farmers or as a cost per additional contract in USD.' ,
+    CHANGE COLUMN `SeEffects` `SeEffects` DOUBLE NULL DEFAULT NULL COMMENT 'The standard error of the estimated treatment effect or cost-effectiveness.' ,
+    CHANGE COLUMN `Treatment` `Treatment` TEXT NULL DEFAULT NULL COMMENT 'The treatment analysed.\nSimple letter, Simple nudge vs simple letter and elaborate nudge vs simple letter.' ,     
+    CHANGE COLUMN `Type` `Type` TEXT NULL DEFAULT NULL COMMENT 'The tyope of outcome (treatment effect or cost-effectiveness).' ,     
+    CHANGE COLUMN `Method` `Method` TEXT NULL DEFAULT NULL COMMENT 'The method used for the meta-analysis: simple WLS (Meta) or PEESE.' ,     
+    COMMENT = 'Table containing the results of a meta-analysis of the effect of nudges sent to farmers to subscribe Payments for Environmental Services regrouping results in Wallander et al (2017), Czap et al (2019) and Chabe-Ferret et al (2022).' ;
+")
+# disconnecting the connection to the SQL server
+dbDisconnect(HdF)
+
+```
+
+**it would be more correct to generate CE with diffusion effects in France for the simple letter (it would be smaller)**
+**ask data from wallander and czap to study diffusion effects** 

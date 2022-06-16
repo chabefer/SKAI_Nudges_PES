@@ -1,16 +1,16 @@
-name: "SKY"
+name: "SKAI"
 output_dir: "."
 navbar:
-  title: "Adequate title for your topic"
+  title: "Nudging farmers to take up Payments for Environmental Services"
   left:
     - text: "Home"
       href: index.html
-    - text: "Topic 1"
-      href: name1.html
-    - text: "Topic 2"
-      href: name2.html
-    - text: "Topic 3"
-      href: name3.html
+    - text: "Wallander et al (2017)"
+      href: wallander.html
+    - text: "Czap et al (2019)"
+      href: czap.html
+    - text: "Chabe-Ferret et al (2022)"
+      href: chabe.html
     - text: "About"
       href: About.html
       

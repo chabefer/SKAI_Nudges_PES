@@ -11,24 +11,38 @@
 
 
 
-<title>index.utf8</title>
+<title>index.knit</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -41,32 +55,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -76,10 +66,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -96,40 +82,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -157,7 +119,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -169,7 +131,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -180,10 +142,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -195,7 +170,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -262,12 +236,12 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Adequate title for your topic</a>
+      <a class="navbar-brand" href="index.html">Nudging farmers to take up Payments for Environmental Services</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -275,13 +249,13 @@ $(document).ready(function () {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="name1.html">Topic 1</a>
+  <a href="wallander.html">Wallander et al (2017)</a>
 </li>
 <li>
-  <a href="name2.html">Topic 2</a>
+  <a href="czap.html">Czap et al (2019)</a>
 </li>
 <li>
-  <a href="name3.html">Topic 3</a>
+  <a href="chabe.html">Chabe-Ferret et al (2022)</a>
 </li>
 <li>
   <a href="About.html">About</a>
@@ -294,7 +268,7 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -302,13 +276,236 @@ $(document).ready(function () {
 </div>
 
 
-<p>This is a <a href="https://chabefer.github.io/SKY/index.html">SKY</a> website examining <strong>your topic</strong>.</p>
-<p>This website contains:</p>
+<p>This is a <a href="https://chabefer.github.io/SKY/index.html">SKAI</a> website examining the impact of nudging farmers to take up Payments for Environmental Services.</p>
+<p>Payments for Environmental Services (PES) are contracts between a service provider (a farmer or a landowner) and a service buyer (the government, an NGO or a private entity), in which providers receive a monetary compensation in exchange for the adoption of practices more favorable to the environment. PES sometimes face low subscription rates which jeopardize their environmental effectiveness. This page synthetizes the results of three large randomized experiments conducted in both the US and the EU to test whether nudges sent by mail can increase the subscription rate of PES:</p>
 <ul>
-<li><a href="name1.html">Topic 1</a></li>
-<li><a href="name2.html">Topic 2</a></li>
-<li><a href="name3.html">Topic 3</a></li>
+<li><a href="wallander.html">Wallander et al (2017): Nudging participation in the Conservation Reserve Program in the US</a></li>
+<li><a href="czap.html">Czap et al (2019): Nudging participation in the Conservation Stewardship Program in the US</a></li>
+<li><a href="chabe.html">Chabe-Ferret et al (2022): Nudging participation in the Payments for Environmental Services Program in the EU</a></li>
 </ul>
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/MainMetaPlot-1.png" alt="Impact and cost-effectiveness of the treatments" width="50%" /><img src="index_files/figure-html/MainMetaPlot-2.png" alt="Impact and cost-effectiveness of the treatments" width="50%" />
+<p class="caption">
+Impact and cost-effectiveness of the treatments
+</p>
+</div>
+<p>The main results of this literature are as follows:</p>
+<ol style="list-style-type: decimal">
+<li>There is <strong>no impact of a simple letter (or of any nudge) on PES enrollment for farmers that never enrolled into a long established program</strong>. The null effect estimated by <a href="wallander.html">Wallander et al (2017)</a> is very precise (0 <span class="math inline">\(\pm\)</span> 8 contract applications per 10000 letters).<br />
+</li>
+<li>There is a <strong>clear impact of sending a simple letter on farmers enrolled in a new program or on farmers with expiring contracts into a long established program</strong>. The impact differs strongly between a simple meta-analysis and the PEESE estimate, suggesting an important role for publication bias. The most conservative estimates obtained using PEESE are of 46 <span class="math inline">\(\pm\)</span> 14 additional contracts per 10000 letters for a cost of 131 <span class="math inline">\(\pm\)</span> 21 USD per additional contract.</li>
+<li><strong>Simple nudges referencing the participation of similar farmers to the PES program are counterproductive</strong>. Adding them to the simple letter has an impact of -35 <span class="math inline">\(\pm\)</span> 12 contracts per 10000 letters when using the simple meta-analysis and -25 <span class="math inline">\(\pm\)</span> 4 contracts per 10000 letters when using PEESE.</li>
+<li><strong>More elaborate nudges such as adding handwritten encouragement notes or easy to use reply forms might be beneficial to participation</strong>, but precision is still too low to conclude. The most favorable elaborate nudge is the inclusion of a handwritten encouragement note studied by <a href="czap.html">Czap et al (2019)</a>.</li>
+<li><strong>Leveraging word of mouth and diffusion effects might make sending simple letters even more cost-effective</strong>, as shown by <a href="chabe.html">Chabe-Ferret et al (2022)</a>. The estimated cost-effectiveness in the region where this treatment works best moves to 68 <span class="math inline">\(\pm\)</span> 11 USD per additional contract (contrast with the estimates ignoring diffusion effects: 131 <span class="math inline">\(\pm\)</span> 21 USD per additional contract). More results on larger datasets are needed in order to pin down the real magnitude of cost savings.</li>
+</ol>
+<p>Below is how we obtained these results.</p>
+<div id="effect-and-cost-effectiveness-of-a-simple-letter" class="section level1">
+<h1>Effect and cost-effectiveness of a simple letter</h1>
+<p>Let us plot the impact of the standard letter on the number of applications as a function of precision, excluding the sample of farmers that never enrolled in the program for a long time:</p>
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/MainPlot-1.png" alt="Impact of a simple letter" width="50%" />
+<p class="caption">
+Impact of a simple letter
+</p>
+</div>
+<p>The plot for treatment effects suggests a positive correlation between effect and standard error, which is suggestive of publication bias. As a consequence, we conduct a meta-analytic regression correcting for publication bias using the <a href="https://chabefer.github.io/SKY_Correct_Pub_Bias/">PEESE estimator</a>.</p>
+<pre class="r"><code># generating weights
+NudgesPES &lt;- NudgesPES %&gt;%
+              mutate(weightsTE = 1/SeTE)
+# sum of weights
+sum.weights.TE &lt;- sum(filter(NudgesPES,Treatment==&quot;1&quot;,Group==&quot;Expiring&quot;)$weightsTE)
+NudgesPES &lt;- NudgesPES %&gt;%
+              mutate(
+                weightsTE= weightsTE/sum.weights.TE,
+                varTE = SeTE^2
+                     )
+
+# Meta
+Meta.nudge.PES &lt;- lm(TE ~ 1,weights=weightsTE, data=filter(NudgesPES,Treatment==&quot;1&quot;,Group==&quot;Expiring&quot;))
+nudge.TE.Meta &lt;- Meta.nudge.PES$coefficients[[1]]
+nudge.SeTE.Meta &lt;- sqrt(diag(vcov((Meta.nudge.PES))))[[1]]
+
+# PEESE
+PEESE.nudge.PES &lt;- lm(TE ~ varTE,weights=weightsTE, data=filter(NudgesPES,Treatment==&quot;1&quot;,Group==&quot;Expiring&quot;))
+nudge.TE.PEESE &lt;- PEESE.nudge.PES$coefficients[[1]]
+nudge.SeTE.PEESE&lt;- sqrt(diag(vcov((PEESE.nudge.PES))))[[1]]
+
+# cost effectiveness
+nudge.CE.Meta &lt;- (0.60*10000)/nudge.TE.Meta
+nudge.SeCE.Meta &lt;- (0.60*10000)*nudge.SeTE.Meta/(nudge.TE.Meta^2)
+nudge.CE.PEESE &lt;- (0.60*10000)/nudge.TE.PEESE
+nudge.SeCE.PEESE &lt;- (0.60*10000)*nudge.SeTE.PEESE/(nudge.TE.PEESE^2)
+
+# Sending results to original table
+Meta.Nudges.1 &lt;- NudgesPES %&gt;%
+                  filter(Treatment==&quot;1&quot;,Group==&quot;Expiring&quot;)%&gt;%
+                  select(TE,SeTE,Paper) %&gt;%
+                  mutate(SeTE2 = SeTE)
+
+Meta.Nudges.1[nrow(Meta.Nudges.1)+1,] &lt;- c(nudge.TE.PEESE,nudge.SeTE.PEESE,&quot;PEESE&quot;,0)
+Meta.Nudges.1[nrow(Meta.Nudges.1)+1,] &lt;- c(nudge.TE.Meta,nudge.SeTE.Meta,&quot;Meta-analysis&quot;,0)
+
+Meta.Nudges.1 &lt;- Meta.Nudges.1 %&gt;%
+                  mutate(
+                    TE=as.numeric(TE),
+                    SeTE=as.numeric(SeTE),
+                    SeTE2=as.numeric(SeTE2),
+                    Paper=factor(Paper,levels=c(&quot;Chabe-Ferret et al (2022)&quot;,&quot;Czap et al (2019)&quot;,&quot;Wallander et al (2017)&quot;,&quot;Meta-analysis&quot;,&quot;PEESE&quot;))
+                         ) 
+
+# PEESE function
+PEESE.fun &lt;- function(se,alpha,beta){
+  return(alpha+beta*se^2)
+}</code></pre>
+<p>Here is the result of this analysis:</p>
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/PlotLetterPEESE-1.png" alt="Impact of a simple letter (with meta-analysis)" width="50%" />
+<p class="caption">
+Impact of a simple letter (with meta-analysis)
+</p>
+</div>
+<p>The results suggest an estimated impact of the simple letter of 109 <span class="math inline">\(\pm\)</span> 61 contracts per 10000 letters when using the simple meta-analysis and 46 <span class="math inline">\(\pm\)</span> 14 additional contracts per 10000 letters when using PEESE. For a cost per letter of around 60 cents (in Euros or USD, since the exchange rate was close to one over the period and inflation was fairly low), we find, using the formula <span class="math inline">\(\hat\sigma_{CE}=\frac{c}{\hat\beta^2}\hat\sigma_{\beta}\)</span>, that cost-effectiveness is equal to 55 <span class="math inline">\(\pm\)</span> 31 USD per additional contract with the simple meta-analysis and 131 <span class="math inline">\(\pm\)</span> 40 USD per additional contract.</p>
+</div>
+<div id="effect-and-cost-effectiveness-of-nudges" class="section level1">
+<h1>Effect and cost-effectiveness of nudges</h1>
+<p>There are two types of nudges: simple nudges mostly referencing otger participants, and more complex nudges such as pre-stamped reply forms, regional peer comparisons or adding a handwritten note.</p>
+<div id="simple-nudges-referencing-other-participants" class="section level2">
+<h2>Simple nudges referencing other participants</h2>
+<p>Let us now examine the effect of simple nudges. Treatment 2 in all three studies is a nudge added on top of the plain letter. In all three studies, the nudge focuses on a comparison with farmers already enrolled from the program. In <a href="wallander.html">Wallander et al (2017)</a>, Treatment 2 is a side box that told farmers how other stewards in their state had provided ecosystem services for their neighbors through participation in CRP, suggesting the popularity of CRP. In <a href="czap.html">Czap et al (2019)</a>, Treatment 2 is an empathy nudge going along the same lines, focusing on other participants in the program: ‘’In the last two years, over 1600 of your fellow Nebraska farmers joined the common cause and enrolled/re-enrolled into the Conservation Stewardship Program.’’ Finally, in <a href="chabe.html">Chabe-Ferret et al (2022)</a>, Treatment 2 includes testimonies by farmers already benefiting from the program. Let’s examine how these treatments fare when compared with the simple letter.</p>
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/PlotNudge2-1.png" alt="Impact of adding simple nudges to a simple letter" width="50%" />
+<p class="caption">
+Impact of adding simple nudges to a simple letter
+</p>
+</div>
+<p>Let us now estimate the meta-anaytic effect (there does not seem to be indications of publication bias here):</p>
+<pre class="r"><code># sum of weights
+sum.weights.TE.2 &lt;- sum(filter(NudgesPES,Treatment==&quot;2vs1&quot;,Group==&quot;Expiring&quot;)$weightsTE)
+NudgesPES &lt;- NudgesPES %&gt;%
+              mutate(
+                weightsTE2= weightsTE/sum.weights.TE.2
+                     )
+
+# Meta
+Meta.nudge.PES.2 &lt;- lm(TE ~ 1,weights=weightsTE2, data=filter(NudgesPES,Treatment==&quot;2vs1&quot;,Group==&quot;Expiring&quot;))
+nudge.TE.Meta.2 &lt;- Meta.nudge.PES.2$coefficients[[1]]
+nudge.SeTE.Meta.2&lt;- sqrt(diag(vcov((Meta.nudge.PES.2))))[[1]]
+
+# PEESE
+PEESE.nudge.PES.2 &lt;- lm(TE ~ varTE,weights=weightsTE2, data=filter(NudgesPES,Treatment==&quot;2vs1&quot;,Group==&quot;Expiring&quot;))
+nudge.TE.PEESE.2 &lt;- PEESE.nudge.PES.2$coefficients[[1]]
+nudge.SeTE.PEESE.2&lt;- sqrt(diag(vcov((PEESE.nudge.PES.2))))[[1]]
+
+# Sending results to original table
+Meta.Nudges.2 &lt;- NudgesPES %&gt;%
+                  filter(Treatment==&quot;2vs1&quot;,Group==&quot;Expiring&quot;)%&gt;%
+                  select(TE,SeTE,Paper) %&gt;%
+                  mutate(SeTE2 = SeTE)
+
+Meta.Nudges.2[nrow(Meta.Nudges.2)+1,] &lt;- c(nudge.TE.PEESE.2,nudge.SeTE.PEESE.2,&quot;PEESE&quot;,0)
+Meta.Nudges.2[nrow(Meta.Nudges.2)+1,] &lt;- c(nudge.TE.Meta.2,nudge.SeTE.Meta.2,&quot;Meta-analysis&quot;,0)
+
+Meta.Nudges.2 &lt;- Meta.Nudges.2 %&gt;%
+                  mutate(
+                    TE=as.numeric(TE),
+                    SeTE=as.numeric(SeTE),
+                    SeTE2=as.numeric(SeTE2),
+                    Paper=factor(Paper,levels=c(&quot;Chabe-Ferret et al (2022)&quot;,&quot;Czap et al (2019)&quot;,&quot;Wallander et al (2017)&quot;,&quot;Meta-analysis&quot;,&quot;PEESE&quot;))
+                         ) </code></pre>
+<p>Here is the result of this analysis:</p>
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/PlotNudgePEESE-1.png" alt="Impact of simple nudges to a simple letter (with meta-analysis)" width="50%" />
+<p class="caption">
+Impact of simple nudges to a simple letter (with meta-analysis)
+</p>
+</div>
+<p>The impact of adding a nudge referencing other participants is -35 <span class="math inline">\(\pm\)</span> 11 contracts per 10000 letters when using the simple meta-analysis and -25 <span class="math inline">\(\pm\)</span> 4 contracts per 10000 letters when using PEESE. Adding a nudge referencing other participants decreases participation in the program.</p>
+</div>
+<div id="more-elaborate-nudges" class="section level2">
+<h2>More elaborate nudges</h2>
+<p>Let us now examine the effect of more elaborate nudges. Treatment 3 in all three studies is a nudge added on top of the plain letter and the basic nudge of Treatment 2. In all three studies, the additional nudges differ a bit. In <a href="wallander.html">Wallander et al (2017)</a>, Treatment 3 consists in two boxes, one emphasizing the stability of CRP payments and the other using peer comparison to signal the regional popularity of CRP. In <a href="czap.html">Czap et al (2019)</a>, Treatment 3 contains the handwritten the mention ‘’Join your fellow Nebraska farmers and ranchers in protecting our land!’’ In Treatment 2, this mention was photocopied instead. Finally, in <a href="chabe.html">Chabe-Ferret et al (2022)</a>, Treatment 3 consists in a pre-stamped reply form decreasing the cost of contacting the caseworker in charge of the program. These treatments are more heterogeneous than Treatment 2. Let’s examine how these treatments fare when compared with the simple letter.</p>
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/PlotNudge3-1.png" alt="Impact of adding elaborate nudges to a simple letter" width="50%" />
+<p class="caption">
+Impact of adding elaborate nudges to a simple letter
+</p>
+</div>
+<p>Let us now estimate the meta-analytic effect (there does not seem to be indications of publication bias here):</p>
+<pre class="r"><code># sum of weights
+sum.weights.TE.3 &lt;- sum(filter(NudgesPES,Treatment==&quot;3vs1&quot;,Group==&quot;Expiring&quot;)$weightsTE)
+NudgesPES &lt;- NudgesPES %&gt;%
+              mutate(
+                weightsTE3= weightsTE/sum.weights.TE.3
+                     )
+
+# Meta
+Meta.nudge.PES.3 &lt;- lm(TE ~ 1,weights=weightsTE3, data=filter(NudgesPES,Treatment==&quot;3vs1&quot;,Group==&quot;Expiring&quot;))
+nudge.TE.Meta.3 &lt;- Meta.nudge.PES.3$coefficients[[1]]
+nudge.SeTE.Meta.3 &lt;- sqrt(diag(vcov((Meta.nudge.PES.3))))[[1]]
+
+# PEESE
+PEESE.nudge.PES.3 &lt;- lm(TE ~ varTE,weights=weightsTE3, data=filter(NudgesPES,Treatment==&quot;3vs1&quot;,Group==&quot;Expiring&quot;))
+nudge.TE.PEESE.3 &lt;- PEESE.nudge.PES.3$coefficients[[1]]
+nudge.SeTE.PEESE.3 &lt;- sqrt(diag(vcov((PEESE.nudge.PES.3))))[[1]]
+
+# Sending results to original table
+Meta.Nudges.3 &lt;- NudgesPES %&gt;%
+                  filter(Treatment==&quot;3vs1&quot;,Group==&quot;Expiring&quot;)%&gt;%
+                  select(TE,SeTE,Paper) %&gt;%
+                  mutate(SeTE2 = SeTE)
+
+Meta.Nudges.3[nrow(Meta.Nudges.3)+1,] &lt;- c(nudge.TE.PEESE.3,nudge.SeTE.PEESE.3,&quot;PEESE&quot;,0)
+Meta.Nudges.3[nrow(Meta.Nudges.3)+1,] &lt;- c(nudge.TE.Meta.3,nudge.SeTE.Meta.3,&quot;Meta-analysis&quot;,0)
+
+Meta.Nudges.3 &lt;- Meta.Nudges.3 %&gt;%
+                  mutate(
+                    TE=as.numeric(TE),
+                    SeTE=as.numeric(SeTE),
+                    SeTE2=as.numeric(SeTE2),
+                    Paper=factor(Paper,levels=c(&quot;Chabe-Ferret et al (2022)&quot;,&quot;Czap et al (2019)&quot;,&quot;Wallander et al (2017)&quot;,&quot;Meta-analysis&quot;,&quot;PEESE&quot;))
+                         ) </code></pre>
+<p>Here is the result of this analysis:</p>
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/PlotNudgeElaboratePEESE-1.png" alt="Impact of elaborate nudges to a simple letter (with meta-analysis)" width="50%" />
+<p class="caption">
+Impact of elaborate nudges to a simple letter (with meta-analysis)
+</p>
+</div>
+<p>The impact of adding a nudge referencing other participants is 8 <span class="math inline">\(\pm\)</span> 34 contracts per 10000 letters when using the simple meta-analysis and 38 <span class="math inline">\(\pm\)</span> 42 contracts per 10000 letters when using PEESE. It is unclear whether these more elaborate nudges help or not. The handwritten note seems to be the most promising one.</p>
+</div>
+</div>
+<div id="sending-results-to-skai" class="section level1">
+<h1>Sending results to SKAI</h1>
+<p>We are now ready to send the main results from our meta-analysis to SKAI. We first need to build a table containing the meta-analytical results.</p>
+<pre class="r"><code># Treatment Effects
+Effects &lt;- c(nudge.TE.Meta,nudge.TE.PEESE,nudge.TE.Meta.2,nudge.TE.PEESE.2,nudge.TE.Meta.3,nudge.TE.PEESE.3,nudge.CE.Meta,nudge.CE.PEESE)
+SeEffects &lt;- c(nudge.SeTE.Meta,nudge.SeTE.PEESE,nudge.SeTE.Meta.2,nudge.SeTE.PEESE.2,nudge.SeTE.Meta.3,nudge.SeTE.PEESE.3,nudge.SeCE.Meta,nudge.SeCE.PEESE)
+ResultsMetaPES &lt;- as.data.frame(cbind(Effects,SeEffects))
+# Table
+ResultsMetaPES$Type &lt;- c(rep(&quot;Treatment Effect&quot;,6),rep(&quot;Cost-Effectiveness&quot;,2))
+ResultsMetaPES$Treatment &lt;- c(rep(&quot;Simple Letter&quot;,2),rep(&quot;Simple Nudge vs Simple Letter&quot;,2),rep(&quot;Elaborate Nudge vs Simple Letter&quot;,2),rep(&quot;Simple Letter&quot;,2))
+ResultsMetaPES$Method &lt;- rep(c(&quot;Meta-analysis&quot;,&quot;PEESE&quot;),4)</code></pre>
+<p>Let’s send the results to SKAI:</p>
+<pre class="r"><code># reading connection informations
+source(here::here(&quot;idSQL.R&quot;))
+# connecting to SQL server
+HdF &lt;- dbConnect(MySQL(), dbname=&quot;HdF&quot;,
+                     user=myid, password=mypass, host=myhost)
+# sending Results table
+dbWriteTable(HdF,&quot;MetaPES&quot;,ResultsMetaPES,overwrite=TRUE)
+# commenting the table
+dbSendQuery(HdF,&quot;ALTER TABLE `HdF`.`MetaPES` 
+    CHANGE COLUMN `Effects` `Effects` DOUBLE NULL DEFAULT NULL COMMENT &#39;The effect of the treatment measured as an increase in contract applications per 10000 farmers or as a cost per additional contract in USD.&#39; ,
+    CHANGE COLUMN `SeEffects` `SeEffects` DOUBLE NULL DEFAULT NULL COMMENT &#39;The standard error of the estimated treatment effect or cost-effectiveness.&#39; ,
+    CHANGE COLUMN `Treatment` `Treatment` TEXT NULL DEFAULT NULL COMMENT &#39;The treatment analysed.\nSimple letter, Simple nudge vs simple letter and elaborate nudge vs simple letter.&#39; ,     
+    CHANGE COLUMN `Type` `Type` TEXT NULL DEFAULT NULL COMMENT &#39;The tyope of outcome (treatment effect or cost-effectiveness).&#39; ,     
+    CHANGE COLUMN `Method` `Method` TEXT NULL DEFAULT NULL COMMENT &#39;The method used for the meta-analysis: simple WLS (Meta) or PEESE.&#39; ,     
+    COMMENT = &#39;Table containing the results of a meta-analysis of the effect of nudges sent to farmers to subscribe Payments for Environmental Services regrouping results in Wallander et al (2017), Czap et al (2019) and Chabe-Ferret et al (2022).&#39; ;
+&quot;)
+# disconnecting the connection to the SQL server
+dbDisconnect(HdF)</code></pre>
+<p><strong>it would be more correct to generate CE with diffusion effects in France for the simple letter (it would be smaller)</strong> <strong>ask data from wallander and czap to study diffusion effects</strong></p>
+</div>
 
 
 
@@ -319,7 +516,7 @@ $(document).ready(function () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -337,7 +534,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
