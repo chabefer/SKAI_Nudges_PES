@@ -443,6 +443,3 @@ dbSendQuery(HdF,"ALTER TABLE `HdF`.`MetaPES`
 dbDisconnect(HdF)
 
 ```
-
-**it would be more correct to generate CE with diffusion effects in France for the simple letter (it would be smaller)**
-**ask data from wallander and czap to study diffusion effects** 
